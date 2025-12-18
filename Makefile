@@ -1,16 +1,38 @@
-CXX = arm-linux-gnueabihf-g++
+# CXX = arm-linux-gnueabihf-g++
+CXX = g++
 CXXFLAGS = -Wall -Wextra
 
-SOURCES = main.cpp servo.cpp
-TARGET = robot_arm_bin
+BUILD_DIR=build
 
-all: $(TARGET)
+SRC = $(wildcard src/*.cpp)
+HEADERS = $(wildcard src/*.h)
+TARGET = $(BUILD_DIR)/robot_arm_bin
 
-$(TARGET): $(SOURCES)
-	$(CXX) $(CXXFLAGS) $(SOURCES) -o $(TARGET)
+USER = robot
+HOST = 192.168.0.194
+DEST_DIR = /home/robot/robot-arm/
+
+.PHONY=all clean upload
+
+all: $(SRC) $(TARGET)
+
+$(TARGET): $(BUILD_DIR) $(SRC)
+	$(CXX) $(CXXFLAGS) $(SRC) -o $(TARGET)
+
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
 
 clean:
-	rm -f $(TARGET)
+	rm -rf $(BUILD_DIR)
 
-copy: $(TARGET)
-	scp $(TARGET) robot@192.168.0.194:/home/robot/$(TARGET)
+build: upload
+	ssh $(USER)@$(HOST) "cd $(DEST_DIR) && make all"
+
+run: all
+	"./$(TARGET)"
+
+upload: $(SRC) $(HEADERS) Makefile
+	rsync -avz --progress src/ Makefile $(USER)@$(HOST):$(DEST_DIR)/src
+
+uploadrun: upload
+	ssh $(USER)@$(HOST) "cd $(DEST_DIR) && make run"
