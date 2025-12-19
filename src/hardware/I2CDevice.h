@@ -10,8 +10,6 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-constexpr double OSC_FACTOR = 1.0f;
-
 class I2CDevice {
 public:
   I2CDevice(const char *device, uint8_t address);
@@ -28,8 +26,6 @@ public:
 
 private:
   int i2c_fd;
-
-  uint8_t calc_pwm_prescale(double frequency);
 };
 
 #endif // !I2CDEVICE_H_

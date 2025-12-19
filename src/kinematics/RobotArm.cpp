@@ -1,9 +1,4 @@
 #include "RobotArm.h"
-#include <unistd.h>
-
-void RobotArm::moveTo(double targetX, double targetY, double targetZ) {
-    // TOOD: implement
-};
 
 void RobotArm::home() {
   servo1.setAngle(90.0);
@@ -33,3 +28,10 @@ void RobotArm::setAngles(double servo1_angle, double servo2_angle, double servo3
 RobotArm::~RobotArm() {
     unstiff();
 }
+
+void RobotArm::update(float dt){
+    servo1.update(dt);
+    servo2.update(dt);
+    servo3.update(dt);
+    servo4.update(dt);
+};

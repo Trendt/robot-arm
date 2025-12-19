@@ -5,9 +5,26 @@ CXXFLAGS = -Wall -Wextra
 
 BUILD_DIR=build
 
-SRC = $(wildcard src/*.cpp)
-HEADERS = $(wildcard src/*.h)
+SRC = \
+	$(wildcard src/*.cpp) \
+	$(wildcard src/hardware/*.cpp) \
+	$(wildcard src/joints/*.cpp) \
+	$(wildcard src/kinematics/*.cpp)
+HEADERS = \
+	$(wildcard src/*.h) \
+	$(wildcard src/hardware/*.h) \
+	$(wildcard src/joints/*.h) \
+	$(wildcard src/kinematics/*.h)
 TARGET = $(BUILD_DIR)/robot_arm_bin
+
+INCLUDES := \
+	-Isrc \
+	-Isrc/hardware \
+	-Isrc/joints \
+	-Isrc/kinematics \
+	-Isrc/motion \
+
+CXXFLAGS += $(INCLUDES)
 
 USER = robot
 HOST = 192.168.0.194

@@ -1,18 +1,15 @@
-#ifndef SERVO_H_
-#define SERVO_H_
+#ifndef PWM_CONTROLLER_H_
+#define PWM_CONTROLLER_H_
 
 #include "I2CDevice.h"
 
-#include <cassert>
+#include <algorithm>
 #include <cstdint>
-#include <cmath>
 
-constexpr uint8_t PWM_FREQUENCY = 50;
+constexpr double OSC_FACTOR = 1.0f;
+constexpr double PWM_FREQUENCY = 50;
+
 constexpr uint8_t ADDRESS_LED_OFFSET = 4;
-constexpr uint8_t CHANNEL_MAX = 15;
-
-// constexpr uint16_t SERVO_MIN_DUTY = 460;
-// constexpr uint16_t SERVO_MAX_DUTY = 2540;
 
 constexpr uint8_t REGISTER_MODE1 =          0x00;
 constexpr uint8_t REGISTER_MODE2 =          0x01;
@@ -39,24 +36,35 @@ constexpr uint8_t MODE2_OUTDRV =     0b00000100;
 constexpr uint8_t MODE2_OUTNE1 =     0b00000010;
 constexpr uint8_t MODE2_OUTNE0 =     0b00000001;
 
-class Servo {
-public:
-  Servo(I2CDevice &device, uint8_t channel, uint16_t duty_min, uint16_t duty_max, double angle_min, double angle_max);
-  ~Servo();
+struct PWMLimits {
+  uint16_t min_duty_cycle;
+  uint16_t max_duty_cycle;
 
-  void setAngle(double angle);
-  void setDutyCycle(double duty_cycle);
-  void setPWM(uint16_t duty_cycle);
-  void unstiff();
+  float clamp_duty_cycle(uint16_t duty_cycle) {
+    if (duty_cycle == 0)
+      return duty_cycle;
 
-private:
-  I2CDevice &i2cDevice;
-  uint8_t channel;
-
-  uint16_t duty_min;
-  uint16_t duty_max;
-  double angle_min;
-  double angle_max;
+    return std::clamp(duty_cycle, min_duty_cycle, max_duty_cycle);
+  }
 };
 
-#endif // !SERVO_H_
+class PWMController {
+public:
+  PWMController(I2CDevice &i2c);
+  ~PWMController();
+
+  /**
+   * @param duty_cycle length of duty cycle in ms
+   */
+  void setDutyCycle(uint8_t channel, double duty_cycle);
+
+private:
+  I2CDevice &i2c;
+  PWMLimits limits;
+
+  uint8_t calcPWMPrescale();
+  uint16_t usToCounts(double us);
+  void setPWM(uint8_t channel, uint16_t duty_cycle);
+};
+
+#endif // !PWM_CONTROLLER_H_
