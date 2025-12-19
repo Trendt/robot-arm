@@ -2,7 +2,7 @@
 #define ROBOTARM_H_
 
 #include "../hardware/PWMController.h"
-#include "../joints/servo_joint.h"
+#include "../joints/ServoJoint.h"
 #include "RobotArmModel.h"
 
 class RobotArm {

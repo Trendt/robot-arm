@@ -1,5 +1,4 @@
-#include "servo_joint.h"
-#include <cstdio>
+#include "ServoJoint.h"
 
 void ServoJoint::setAngle(float angle) {
   angle = joint_limits.clampAngle(angle);

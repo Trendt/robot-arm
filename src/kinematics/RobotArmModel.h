@@ -1,5 +1,5 @@
 #include "../hardware/PWMLimits.h"
-#include "../joints/joint_limits.h"
+#include "../joints/JointLimits.h"
 
 constexpr PWMLimits   servo1_pwm_limits   {460, 2540};
 constexpr JointLimits servo1_joint_limits {45.0, 135.0};

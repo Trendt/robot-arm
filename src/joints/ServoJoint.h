@@ -1,8 +1,8 @@
 #ifndef SERVO_JOINT_H_
 #define SERVO_JOINT_H_
 
-#include "joint.h"
-#include "joint_limits.h"
+#include "Joint.h"
+#include "JointLimits.h"
 #include "../hardware/PWMController.h"
 #include "../hardware/PWMLimits.h"
 
