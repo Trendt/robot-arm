@@ -1,15 +1,8 @@
 #include "I2CDevice.h"
 #include "Servo.h"
 
-#include <iostream>
-
 inline uint8_t I2CDevice::calc_pwm_prescale(double frequency) {
   double prescale = 25e6f * OSC_FACTOR / (4096.0f * frequency) - 1;
-
-  uint8_t prescale2 = readRegister(REGISTER_PRE_SCALE);
-  float real_freq = 25e6f / (4096.0f * (prescale2 + 1));
-  printf("PWM freq ≈ %.2f Hz\n", real_freq);
-
   return static_cast<uint8_t>(prescale + 0.5f); // + 0.5f to make it round up instead of floor
 }
 
@@ -33,23 +26,17 @@ I2CDevice::I2CDevice(const char *device, uint8_t address){
     setFlag(REGISTER_MODE1, MODE1_SLEEP);
 
     // set prescale (frequency)
-    printf("PRE_SCALE = %d\n", calc_pwm_prescale(PWM_FREQUENCY));
     writeValue(REGISTER_PRE_SCALE, calc_pwm_prescale(PWM_FREQUENCY));
 
     // wake
     unsetFlag(REGISTER_MODE1, MODE1_SLEEP);
     usleep(500);
     setFlag(REGISTER_MODE1, MODE1_RESTART);
-
-    printf("MODE1 = 0x%02X\n", readRegister(REGISTER_MODE1));
 }
 
 I2CDevice::~I2CDevice(){
     // disable chip
-    uint8_t buffer[2];
-    buffer[0] = 0;
-    buffer[1] = 0;
-    write(i2c_fd, buffer, 2);
+    writeValue(0, (uint8_t)0);
 
     close(i2c_fd);
 }

@@ -2,9 +2,7 @@
 #include <unistd.h>
 
 void RobotArm::moveTo(double targetX, double targetY, double targetZ) {
-    // servo1.setAngle(0.0);
-    // servo2.setAngle(0.0);
-    // servo3.setAngle(0.0);
+    // TOOD: implement
 };
 
 void RobotArm::home() {

@@ -1,7 +1,7 @@
 #include "I2CDevice.h"
 #include "RobotArm.h"
 
-#include <cstdint>
+#include <exception>
 #include <iostream>
 #include <unistd.h>
 
@@ -11,28 +11,34 @@ int main() {
   try {
     I2CDevice servoController("/dev/i2c-1", I2C_ADDRESS);
     RobotArm arm(servoController);
-    arm.unstiff();
 
-    while (true) {
-      arm.servo4.setAngle(0.0);
-      usleep(750000);
-
-      arm.servo4.setAngle(90.0);
-      usleep(750000);
-
-      arm.servo4.setAngle(180.0);
-      usleep(750000);
+    arm.home();
+    sleep(1);
+    for (double i = 0.0; i <= 1.0; i += 0.1) {
+      double angle = i * 180.0;
+      arm.servo1.setAngle(angle);
+      usleep(500000);
     }
 
-    // arm.home();
-    // sleep(1);
+    arm.home();
+    sleep(1);
+    for (double i = 0.0; i <= 1.0; i += 0.1) {
+      double angle = i * 180.0;
+      arm.servo2.setAngle(angle);
+      usleep(500000);
+    }
 
-    // for (double i = 0.0; i <= 180.0; i+= 10.0) {
-    //     arm.setAngles(90.0, 90.0, 90.0, i);
-    //     sleep(1);
-    // }
-    // arm.home();
-    // sleep(1);
+    arm.home();
+    sleep(1);
+    for (double i = 0.0; i <= 1.0; i += 0.1) {
+      double angle = i * 180.0;
+      arm.servo3.setAngle(angle);
+      usleep(500000);
+    }
+
+    arm.home();
+    sleep(1);
+    arm.unstiff();
   } catch (const std::exception &e) {
     std::cerr << e.what() << std::endl;
     return EXIT_FAILURE;

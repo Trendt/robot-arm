@@ -1,3 +1,4 @@
+# TODO: cross-compile
 # CXX = arm-linux-gnueabihf-g++
 CXX = g++
 CXXFLAGS = -Wall -Wextra

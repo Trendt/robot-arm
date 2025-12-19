@@ -11,8 +11,8 @@ constexpr uint8_t PWM_FREQUENCY = 50;
 constexpr uint8_t ADDRESS_LED_OFFSET = 4;
 constexpr uint8_t CHANNEL_MAX = 15;
 
-constexpr uint16_t SERVO_MIN_DUTY = 440;
-constexpr uint16_t SERVO_MAX_DUTY = 2560;
+// constexpr uint16_t SERVO_MIN_DUTY = 460;
+// constexpr uint16_t SERVO_MAX_DUTY = 2540;
 
 constexpr uint8_t REGISTER_MODE1 =          0x00;
 constexpr uint8_t REGISTER_MODE2 =          0x01;
@@ -41,7 +41,7 @@ constexpr uint8_t MODE2_OUTNE0 =     0b00000001;
 
 class Servo {
 public:
-  Servo(I2CDevice &device, uint8_t channel);
+  Servo(I2CDevice &device, uint8_t channel, uint16_t duty_min, uint16_t duty_max, double angle_min, double angle_max);
   ~Servo();
 
   void setAngle(double angle);
@@ -53,7 +53,10 @@ private:
   I2CDevice &i2cDevice;
   uint8_t channel;
 
-  double angle;
+  uint16_t duty_min;
+  uint16_t duty_max;
+  double angle_min;
+  double angle_max;
 };
 
 #endif // !SERVO_H_
