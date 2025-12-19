@@ -7,13 +7,16 @@
 class RobotArm {
 public:
   RobotArm(I2CDevice &device)
-      : servo1(device, 0), servo2(device, 1), servo3(device, 2) {}
+      : servo4(device, 3), servo1(device, 0), servo2(device, 1), servo3(device, 2){}
   ~RobotArm();
 
   void moveTo(double targetX, double targetY, double targetZ);
   void home();
   void unstiff();
-  void setPWM(uint16_t servo1_pwm, uint16_t servo2_pwm, uint16_t servo3_pwm);
+  void setAngles(double servo1_angle, double servo2_angle, double servo3_angle);
+  void setAngles(double servo1_angle, double servo2_angle, double servo3_angle, double servo4_angle);
+
+ Servo servo4;
 
 private:
   Servo servo1, servo2, servo3;

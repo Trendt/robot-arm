@@ -16,10 +16,10 @@ DEST_DIR = /home/robot/robot-arm/
 
 all: $(SRC) $(TARGET)
 
-$(TARGET): $(BUILD_DIR) $(SRC)
+$(TARGET): build_dir $(SRC)
 	$(CXX) $(CXXFLAGS) $(SRC) -o $(TARGET)
 
-$(BUILD_DIR):
+build_dir:
 	mkdir -p $(BUILD_DIR)
 
 clean:
@@ -32,7 +32,8 @@ run: all
 	"./$(TARGET)"
 
 upload: $(SRC) $(HEADERS) Makefile
-	rsync -avz --progress src/ Makefile $(USER)@$(HOST):$(DEST_DIR)/src
+	rsync -avz --progress Makefile $(USER)@$(HOST):$(DEST_DIR)
+	rsync -avz --progress src/ $(USER)@$(HOST):$(DEST_DIR)/src
 
 uploadrun: upload
 	ssh $(USER)@$(HOST) "cd $(DEST_DIR) && make run"
