@@ -4,6 +4,7 @@
 #include "joint.h"
 #include "joint_limits.h"
 #include "../hardware/PWMController.h"
+#include "../hardware/PWMLimits.h"
 
 #include <cstdint>
 

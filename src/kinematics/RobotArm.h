@@ -2,21 +2,8 @@
 #define ROBOTARM_H_
 
 #include "../hardware/PWMController.h"
-#include "../joints/joint_limits.h"
 #include "../joints/servo_joint.h"
-
-// TODO: export to config of some sort
-constexpr PWMLimits   servo1_pwm_limits   {460, 2540};
-constexpr JointLimits servo1_joint_limits {45.0, 135.0};
-
-constexpr PWMLimits   servo2_pwm_limits   {460, 2540};
-constexpr JointLimits servo2_joint_limits {20.0, 160.0};
-
-constexpr PWMLimits   servo3_pwm_limits   {460, 2540};
-constexpr JointLimits servo3_joint_limits {0.0, 125.0};
-
-constexpr PWMLimits   servo4_pwm_limits   {460, 2540};
-constexpr JointLimits servo4_joint_limits {0.0, 180.0};
+#include "RobotArmModel.h"
 
 class RobotArm {
 public:
@@ -31,9 +18,11 @@ public:
   void unstiff();
   void update(float dt);
   void setAngles(double servo1_angle, double servo2_angle, double servo3_angle);
-  void setAngles(double servo1_angle, double servo2_angle, double servo3_angle, double servo4_angle);
+  void setAngles(double servo1_angle, double servo2_angle, double servo3_angle,
+                 double servo4_angle);
 
   ServoJoint servo1, servo2, servo3, servo4;
+
 private:
 };
 

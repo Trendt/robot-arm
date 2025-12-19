@@ -36,18 +36,6 @@ constexpr uint8_t MODE2_OUTDRV =     0b00000100;
 constexpr uint8_t MODE2_OUTNE1 =     0b00000010;
 constexpr uint8_t MODE2_OUTNE0 =     0b00000001;
 
-struct PWMLimits {
-  uint16_t min_duty_cycle;
-  uint16_t max_duty_cycle;
-
-  float clamp_duty_cycle(uint16_t duty_cycle) {
-    if (duty_cycle == 0)
-      return duty_cycle;
-
-    return std::clamp(duty_cycle, min_duty_cycle, max_duty_cycle);
-  }
-};
-
 class PWMController {
 public:
   PWMController(I2CDevice &i2c);
@@ -60,7 +48,6 @@ public:
 
 private:
   I2CDevice &i2c;
-  PWMLimits limits;
 
   uint8_t calcPWMPrescale();
   uint16_t usToCounts(double us);
