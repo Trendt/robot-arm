@@ -5,7 +5,7 @@ void ServoJoint::setAngle(float angle) {
   target_angle = angle;
 }
 
-float ServoJoint::position() {
+float ServoJoint::getAngle() {
   // TODO: actual current angle readable from register?
   return target_angle;
 };

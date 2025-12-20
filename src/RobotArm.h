@@ -1,10 +1,11 @@
 #ifndef ROBOTARM_H_
 #define ROBOTARM_H_
 
-#include "../hardware/PWMController.h"
-#include "../joints/ServoJoint.h"
-#include "RobotArmModel.h"
+#include "hardware/PWMController.h"
+#include "joints/ServoJoint.h"
+#include "ServoLimits.h"
 
+// TODO: change to using vector<ServoJoint>
 class RobotArm {
 public:
   RobotArm(PWMController &pwm_controller)

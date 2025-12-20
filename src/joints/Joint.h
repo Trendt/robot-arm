@@ -4,7 +4,7 @@
 class Joint {
 public:
   virtual void setAngle(float angle) = 0;
-  virtual float position() = 0;
+  virtual float getAngle() = 0;
   virtual void update(float dt) = 0;
   virtual void unstiff() = 0;
   virtual ~Joint() = default;

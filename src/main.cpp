@@ -1,4 +1,4 @@
-#include "kinematics/RobotArm.h"
+#include "RobotArm.h"
 #include "hardware/I2CDevice.h"
 #include <exception>
 #include <iostream>

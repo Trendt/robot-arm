@@ -16,7 +16,7 @@ public:
         pwm_limits(pwm_limits), joint_limits(limits) {};
 
   void setAngle(float angle) override;
-  float position() override;
+  float getAngle() override;
   void update(float dt) override;
   void unstiff() override;
 
