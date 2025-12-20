@@ -1,7 +1,24 @@
 #include "LinearAlgebra.h"
 
+// TODO: cleanup
+
 inline float angle_to_radians(float angle) {
     return (3.1415 / 180.0) * angle;
+};
+
+Matrix3x3f operator*(const Matrix3x3f &a, const Matrix3x3f &b) {
+  Matrix3x3f result;
+
+  for (int i = 0; i < 3; ++i) {
+    for (int j = 0; j < 3; ++j) {
+      result.m[i][j] =
+          a.m[i][0] * b.m[0][j] +
+          a.m[i][1] * b.m[1][j] +
+          a.m[i][2] * b.m[2][j];
+    }
+  }
+
+  return result;
 };
 
 void Vector2f::add(const Vector2f &vec) {
@@ -29,8 +46,8 @@ void Vector2f::scale(float scalar) {
 };
 
 void Vector2f::transform(const Matrix2x2f &transformation) {
-    float new_x = transformation.m00 * x + transformation.m01 * y;
-    float new_y = transformation.m10 * x + transformation.m11 * y;
+    float new_x = transformation.m[0][0] * x + transformation.m[0][1] * y;
+    float new_y = transformation.m[1][0] * x + transformation.m[1][1] * y;
 
     x = new_x;
     y = new_y;
@@ -66,11 +83,22 @@ void Vector3f::scale(float scalar) {
 };
 
 void Vector3f::transform(const Matrix3x3f &transformation) {
-    float new_x = transformation.m00 * x + transformation.m01 * y + transformation.m02 * z;
-    float new_y = transformation.m10 * x + transformation.m11 * y + transformation.m12 * z;
-    float new_z = transformation.m20 * x + transformation.m21 * y + transformation.m22 * z;
+    float new_x = transformation.m[0][0] * x + transformation.m[0][1] * y + transformation.m[0][2] * z;
+    float new_y = transformation.m[1][0] * x + transformation.m[1][1] * y + transformation.m[1][2] * z;
+    float new_z = transformation.m[2][0] * x + transformation.m[2][1] * y + transformation.m[2][2] * z;
 
     x = new_x;
     y= new_y;
     z= new_z;
+};
+
+Vector3f operator+(const Vector3f &a, const Vector3f &b) {
+  return (Vector3f){a.x + b.x, a.y + b.y, a.z + b.z};
+};
+
+Vector3f operator*(const Vector3f &a, const Matrix3x3f &M) {
+  Vector3f result = {a.x, a.y, a.z};
+  result.transform(M);
+
+  return result;
 };
